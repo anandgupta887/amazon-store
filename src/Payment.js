@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./Payment.css";
 import { useStateValue } from "./StateProvider";
 import CheckoutProduct from "./CheckoutProduct";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
 import { getBasketTotal } from "./reducer";
@@ -92,7 +93,7 @@ function Payment() {
     <div className="payment">
       <div className="payment__container">
         <h1>
-          Checkout (<Link to="/checkout">{basket?.length} items</Link>)
+          Checkout (<Link href="/checkout">{basket?.length} items</Link>)
         </h1>
         <div className="payment__section">
           <div className="payment__title">

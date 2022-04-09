@@ -3,14 +3,23 @@ import "./Home.css";
 import Product from "./Product";
 
 function Home() {
+  const getImageLink = () => {
+    let arr = [
+      "https://m.media-amazon.com/images/I/61WLOpMnNSL._SX3000_.jpg",
+      "https://m.media-amazon.com/images/I/41p+WR-JlML._SX900_.jpg",
+      "https://m.media-amazon.com/images/I/81ufZBFz53L._SX3000_.jpg",
+      "https://m.media-amazon.com/images/I/71tAakBaAsL._SX3000_.jpg",
+      "https://m.media-amazon.com/images/I/61IkazYhP1L._SX3000_.jpg",
+      "https://m.media-amazon.com/images/I/61y9Gzn5b6L._SX3000_.jpg",
+    ];
+
+    return arr[((Math.random() * 100) % 6).toFixed(0)];
+  };
+
   return (
     <div className="home">
       <div className="home__container">
-        <img
-          className="home__image"
-          src="https://images-eu.ssl-images-amazon.com/images/G/02/digital/video/merch2016/Hero/Covid19/Generic/GWBleedingHero_ENG_COVIDUPDATE__XSite_1500x600_PV_en-GB._CB428684220_.jpg"
-          alt=""
-        />
+        <img className="home__image" src={getImageLink()} alt="" />
         <div className="home__row">
           <Product
             id="49538075"
