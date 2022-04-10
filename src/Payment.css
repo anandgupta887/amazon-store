@@ -10,6 +10,12 @@
   border-bottom: 1px solid lightgray;
 }
 
+
+.payment__priceContainer {
+  margin-top:10px;
+}
+
+
 .payment__section {
   display: flex;
   padding: 20px;

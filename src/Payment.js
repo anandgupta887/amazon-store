@@ -30,6 +30,7 @@ function Payment() {
       console.log(amount);
       amount = Math.floor(amount);
       console.log(amount);
+
       const response = await axios({
         method: "post",
         // Stripe expects the total in a currencies subunits
@@ -58,7 +59,7 @@ function Payment() {
       })
       .then(({ paymentIntent }) => {
         // paymentIntent = payment confirmation
-        console.log(paymentIntent);
+        console.log("paymentIntent", paymentIntent);
 
         db.collection("users")
           .doc(user?.uid)
@@ -137,11 +138,13 @@ function Payment() {
                   thousandSeparator={true}
                   prefix={"₹"}
                 />
-                <button disabled={processing || disabled || succeeded}>
+                <button disabled={processing || disabled || succeeded || error}>
                   <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
                 </button>
               </div>
-              {error && <div>{error}</div>}
+              {error && (
+                <div style={{ marginTop: "10px", color: "red" }}>{error}</div>
+              )}
             </form>
           </div>
         </div>
