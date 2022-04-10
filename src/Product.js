@@ -7,8 +7,9 @@ import { Box } from "@material-ui/core";
 function Product({ id, title, image, rating, price }) {
   const [{ basket }, dispatch] = useStateValue();
 
-  const addToBasket = () => {
+  const addToBasket = (e) => {
     //dispatch the item to data layer
+    e.preventDefault();
     dispatch({
       type: "ADD_TO_BASKET",
       item: {

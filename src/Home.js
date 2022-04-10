@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Product from "./Product";
 
 function Home() {
+  const [image, setImage] = useState("");
   const getImageLink = () => {
     let arr = [
       "https://m.media-amazon.com/images/I/61WLOpMnNSL._SX3000_.jpg",
@@ -13,13 +14,17 @@ function Home() {
       "https://m.media-amazon.com/images/I/61y9Gzn5b6L._SX3000_.jpg",
     ];
 
-    return arr[((Math.random() * 100) % 6).toFixed(0)];
+    setImage(arr[((Math.random() * 100) % 6).toFixed(0)]);
   };
+
+  useEffect(() => {
+    getImageLink();
+  }, []);
 
   return (
     <div className="home">
       <div className="home__container">
-        <img className="home__image" src={getImageLink()} alt="" />
+        <img className="home__image" src={image} alt="" />
         <div className="home__row">
           <Product
             id="49538075"
