@@ -1,7 +1,7 @@
 import React from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 import { ShoppingBasket } from "@material-ui/icons";
 import { useStateValue } from "./StateProvider";
 import "./Header.css";
@@ -18,7 +18,7 @@ function Header() {
 
   return (
     <div className="header">
-      <Link href="/">
+      <Link to="/">
         <img
           className="header__logo"
           src="http://pngimg.com/uploads/amazon/amazon_PNG11.png"
@@ -31,7 +31,7 @@ function Header() {
       </div>
 
       <div className="header__nav">
-        <Link href={!user && "/login"} color="inherit" underline="none">
+        <Link to={!user && "/login"} color="inherit" underline="none">
           <div onClick={handleAuthentication} className="header__option">
             <span className="header__optionLineOne">
               Hello {user ? user.email : "Guest"}
@@ -42,7 +42,7 @@ function Header() {
             </span>
           </div>
         </Link>
-        <Link href={user && "/orders"} color="inherit" underline="none">
+        <Link to={user && "/orders"} color="inherit" underline="none">
           <div className="header__option">
             <span className="header__optionLineOne">Returns</span>
             <span className="header__optionLineTwo">& Orders</span>
@@ -52,7 +52,7 @@ function Header() {
           <span className="header__optionLineOne">Your</span>
           <span className="header__optionLineTwo">Prime</span>
         </div>
-        <Link href="/checkout">
+        <Link to="/checkout">
           <div className="header__optionBasket">
             <ShoppingCartIcon />
             <span className="header__optionLineTwo header__basketCount">
