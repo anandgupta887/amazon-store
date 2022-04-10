@@ -7,7 +7,7 @@ import "./Subtotal.css";
 
 function Subtotal() {
   const history = useHistory();
-  const [{ basket }, dispatch] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
 
   return (
     <div className="subtotal">
@@ -29,7 +29,11 @@ function Subtotal() {
         thousandSeparator={true}
         prefix={"₹"}
       />
-      <button onClick={(e) => history.push("/payment")}>
+      <button
+        onClick={(e) => {
+          user ? history.push("/payment") : history.push("/login");
+        }}
+      >
         Proceed to checkout
       </button>
     </div>

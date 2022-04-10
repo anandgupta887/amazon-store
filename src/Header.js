@@ -42,14 +42,17 @@ function Header() {
             </span>
           </div>
         </Link>
-        <Link to={user && "/orders"} color="inherit" underline="none">
-          <div className="header__option">
-            <span className="header__optionLineOne">Returns</span>
-            <span className="header__optionLineTwo">& Orders</span>
-          </div>
-        </Link>
+        {user && (
+          <Link to={user && "/orders"} color="inherit" underline="none">
+            <div className="header__option">
+              <span className="header__optionLineOne">Returns</span>
+              <span className="header__optionLineTwo">& Orders</span>
+            </div>
+          </Link>
+        )}
+
         <div className="header__option">
-          <span className="header__optionLineOne">Your</span>
+          <span className="header__optionLineOne">{user ? "Your" : "Get"}</span>
           <span className="header__optionLineTwo">Prime</span>
         </div>
         <Link to="/checkout">
