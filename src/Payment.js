@@ -23,53 +23,57 @@ function Payment() {
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState(true);
 
-  useEffect(() => {
-    // generate the special stripe secret which allows us to charge a customer
-    const getClientSecret = async () => {
-      var amount = getBasketTotal(basket) * 100;
-      console.log(amount);
-      amount = Math.floor(amount);
-      console.log(amount);
+  // useEffect(() => {
+  //   // generate the special stripe secret which allows us to charge a customer
+  //   const getClientSecret = async () => {
+  //     var amount = getBasketTotal(basket) * 100;
+  //     console.log(amount);
+  //     amount = Math.floor(amount);
+  //     console.log(amount);
 
-      const response = await axios({
-        method: "post",
-        // Stripe expects the total in a currencies subunits
-        url: `/payments/create?total=${amount}`,
-      });
-      setClientSecret(response.data.clientSecret);
-    };
+  //     const response = await axios({
+  //       method: "post",
+  //       // Stripe expects the total in a currencies subunits
+  //       url: `/payments/create?total=${amount}`,
+  //     });
+  //     setClientSecret(response.data.clientSecret);
+  //   };
 
-    if (basket.length) {
-      getClientSecret();
-    }
-  }, [basket]);
+  //   if (basket.length) {
+  //     getClientSecret();
+  //   }
+  // }, [basket]);
 
   const handleSubmit = async (event) => {
     //do all the stripe stuff
     event.preventDefault();
     setProcessing(true);
 
-    console.log(clientSecret);
+    var amount = getBasketTotal(basket) * 100;
+    console.log(amount);
+    amount = Math.floor(amount);
 
-    const payload = await stripe
-      .confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      })
-      .then(({ paymentIntent }) => {
-        // paymentIntent = payment confirmation
-        console.log("paymentIntent", paymentIntent);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+    });
 
-        db.collection("users")
-          .doc(user?.uid)
-          .collection("orders")
-          .doc(paymentIntent.id)
-          .set({
-            basket: basket,
-            amount: paymentIntent.amount,
-            created: paymentIntent.created,
-          });
+    if (!error) {
+      try {
+        const { id } = paymentMethod;
+        const response = await axios({
+          method: "post",
+          // Stripe expects the total in a currencies subunits
+          url: `/payments/create?total=${amount}&id=${id}`,
+        });
+
+        console.log(response);
+
+        db.collection("users").doc(user?.uid).collection("orders").doc(id).set({
+          basket: basket,
+          amount: response.data.clientSecret.amount,
+          created: response.data.clientSecret.created,
+        });
 
         setSucceeded(true);
         setError(null);
@@ -80,7 +84,25 @@ function Payment() {
         });
 
         history.replace("/orders");
-      });
+
+        // const payload = await stripe
+        //   .confirmCardPayment(clientSecret, {
+        //     payment_method: {
+        //       card: elements.getElement(CardElement),
+        //     },
+        //   })
+        //   .then(({ paymentIntent }) => {
+        //     // paymentIntent = payment confirmation
+        //     console.log("paymentIntent", paymentIntent);
+
+        //
+        //   });
+      } catch (error) {
+        console.log("Error", error);
+      }
+    } else {
+      console.log(error.message);
+    }
   };
 
   const handleChange = (event) => {
